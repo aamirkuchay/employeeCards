@@ -61,8 +61,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authenticationProvider(authenticationProvider());
     }
 
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
