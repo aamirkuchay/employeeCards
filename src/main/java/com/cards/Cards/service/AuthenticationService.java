@@ -16,4 +16,5 @@ public interface AuthenticationService {
     User getUserById(Long id);
     Page<User> findAllByPage(Pageable pageable);
 
+    void changePassword(String username, String oldPassword, String newPassword);
 }
