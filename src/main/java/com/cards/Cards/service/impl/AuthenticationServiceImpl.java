@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -76,21 +77,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public JwtAuthenticationResponse signIn(SigninRequest sign) {
         if (sign.getPassword() == null) {
-            throw new IllegalArgumentException("Password is required");
+            throw new ResourceNotFoundException("Password is required");
         }
-        authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(sign.getUsername(), sign.getPassword()));
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(sign.getUsername(), sign.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new ResourceNotFoundException("Invalid Username or Password");
+        }
+
         User user = userRepository.findByUsername(sign.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Email or Password"));
-       
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid Username or Password"));
+
         String jwt = jwtService.generateToken(user);
 
         JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
         jwtAuthenticationResponse.setToken(jwt);
         jwtAuthenticationResponse.setUser(user);
         return jwtAuthenticationResponse;
-
     }
+
 
 
     @Override
