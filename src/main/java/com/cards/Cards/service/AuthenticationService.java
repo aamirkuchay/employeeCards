@@ -4,9 +4,12 @@ import com.cards.Cards.dto.JwtAuthenticationResponse;
 import com.cards.Cards.dto.SigninRequest;
 import com.cards.Cards.dto.SignupRequest;
 import com.cards.Cards.dto.UpdateUserRequest;
+import com.cards.Cards.entity.Role;
 import com.cards.Cards.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface AuthenticationService {
 
@@ -17,4 +20,6 @@ public interface AuthenticationService {
     Page<User> findAllByPage(Pageable pageable);
 
     void changePassword(String username, String oldPassword, String newPassword);
+
+    List<Role> getAllRoles();
 }

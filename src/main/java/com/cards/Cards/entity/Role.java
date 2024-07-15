@@ -3,6 +3,7 @@ package com.cards.Cards.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.CascadeType;
@@ -23,6 +24,7 @@ public class Role {
     @NotEmpty(message = "Role name is required")
     @Column(unique = true)
     private String name;
+
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     @JsonManagedReference

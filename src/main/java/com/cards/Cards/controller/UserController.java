@@ -4,6 +4,7 @@ package com.cards.Cards.controller;
 import com.cards.Cards.dto.ChangePasswordRequest;
 import com.cards.Cards.dto.ResponseMessage;
 import com.cards.Cards.dto.UpdateUserRequest;
+import com.cards.Cards.entity.Role;
 import com.cards.Cards.entity.User;
 import com.cards.Cards.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -49,6 +52,14 @@ public class UserController {
                 changePasswordRequest.getNewPassword());
         return ResponseEntity.ok(new ResponseMessage("Password changed successfully"));
     }
+
+
+    @GetMapping("/allRoles")
+    public ResponseEntity<List<Role>> getAllRoles(){
+     List<Role> roles =   authenticationService.getAllRoles();
+        return ResponseEntity.ok().body(roles);
+    }
+
 
 }
 

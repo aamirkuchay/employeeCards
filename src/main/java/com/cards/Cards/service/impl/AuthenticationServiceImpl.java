@@ -1,6 +1,7 @@
 package com.cards.Cards.service.impl;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import com.cards.Cards.dto.JwtAuthenticationResponse;
@@ -21,7 +22,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     UserRepository userRepository;
+
 
 //    @Autowired
 //    PasswordEncoder passwordEncoder;
@@ -116,9 +117,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setPhoneNumber(updateUserRequest.getPhoneNumber());
         user.setUsername(updateUserRequest.getUsername());
 
-        if (updateUserRequest.getPassword() != null && !updateUserRequest.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(updateUserRequest.getPassword()));
-        }
+//        if (updateUserRequest.getPassword() != null && !updateUserRequest.getPassword().isEmpty()) {
+//            user.setPassword(passwordEncoder.encode(updateUserRequest.getPassword()));
+//        }
 
         if (updateUserRequest.getRole().getName() != null && !updateUserRequest.getRole().getName().isEmpty()) {
             Optional<Role> roleOptional = roleRepository.findByName(updateUserRequest.getRole().getName());
@@ -155,6 +156,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
+    }
+
+    @Override
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
     }
 
 }
