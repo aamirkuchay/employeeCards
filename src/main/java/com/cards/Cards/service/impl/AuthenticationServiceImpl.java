@@ -107,10 +107,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!userOptional.isPresent()) {
             throw new ResourceNotFoundException("User not found");
         }
-        if (userRepository.existsByUsername(updateUserRequest.getUsername())) {
-            throw new RuntimeException("Username already taken");
-        }
-
         User user = userOptional.get();
         user.setName(updateUserRequest.getName());
         user.setAddress(updateUserRequest.getAddress());
